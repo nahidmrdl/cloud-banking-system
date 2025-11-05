@@ -15,6 +15,7 @@ A secure, scalable banking simulation showcasing OOP principles and cloud integr
 2. `pip install -r requirements.txt`
 3. Add .env with Supabase keys (see below)
 
-## Roadmap
-- Phase 1: Setup (done)
-- Will be updated!
+📘 **Documentation**
+- [Requirements Specification](docs/requirements.md)
+- [UML Diagrams](docs/diagrams/)
+- [Database Schema](docs/schema.sql)
