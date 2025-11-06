@@ -1,0 +1,44 @@
+@startuml
+' Set skin parameters for a database look
+skinparam linetype ortho
+
+' === Entity Definitions ===
+
+entity users {
+    *id : PK
+    --
+    name
+    email
+    password_hash
+    role
+    created_at
+}
+
+entity accounts {
+    *id : PK
+    --
+    *user_id : FK
+    type
+    balance
+    created_at
+}
+
+entity transactions {
+    *id : PK
+    --
+    *account_id : FK
+    type
+    amount
+    timestamp
+    description
+}
+
+' === Relationships (Using Crow's Foot Notation) ===
+
+' A User can have one or more Accounts (1 to Many)
+users ||--o{ accounts : has
+
+' An Account can have one or more Transactions (1 to Many)
+accounts ||--o{ transactions : logs
+
+@enduml
