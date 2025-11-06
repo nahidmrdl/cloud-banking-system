@@ -1,0 +1,15 @@
+@startuml
+title Login Sequence Diagram
+
+actor Customer
+
+Customer -> AuthService : login(email, password)
+activate AuthService
+AuthService -> SupabaseClient : verify credentials (Supabase Auth)
+activate SupabaseClient
+SupabaseClient --> AuthService : authentication result
+deactivate SupabaseClient
+AuthService --> Customer : success token / authentication failed
+deactivate AuthService
+
+@enduml

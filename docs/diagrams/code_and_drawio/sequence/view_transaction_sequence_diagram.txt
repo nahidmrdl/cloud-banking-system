@@ -1,0 +1,15 @@
+@startuml
+title View Transaction History Sequence Diagram
+
+actor Customer
+
+Customer -> BankingService : get_transaction_history(account_id)
+activate BankingService
+BankingService -> SupabaseClient : select * from transactions where account_id = ?
+activate SupabaseClient
+SupabaseClient --> BankingService : list of transactions
+deactivate SupabaseClient
+BankingService --> Customer : display transaction history
+deactivate BankingService
+
+@enduml

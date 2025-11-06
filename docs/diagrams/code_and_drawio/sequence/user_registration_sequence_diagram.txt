@@ -1,0 +1,15 @@
+@startuml
+title User Registration Sequence Diagram
+
+actor Customer
+
+Customer -> AuthService : register(name, email, password)
+activate AuthService
+AuthService -> SupabaseClient : insert user data into "users" table
+activate SupabaseClient
+SupabaseClient --> AuthService : success confirmation
+deactivate SupabaseClient
+AuthService --> Customer : registration success message
+deactivate AuthService
+
+@enduml

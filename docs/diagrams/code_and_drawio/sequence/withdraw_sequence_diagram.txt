@@ -1,0 +1,26 @@
+@startuml
+title Withdraw Transaction Sequence Diagram
+
+actor Customer
+
+Customer -> BankingService : withdraw(account_id, amount)
+activate BankingService
+BankingService -> SupabaseClient : fetch current balance
+activate SupabaseClient
+SupabaseClient --> BankingService : balance data
+deactivate SupabaseClient
+
+alt sufficient balance
+  BankingService -> SupabaseClient : update balance (deduct amount)
+  activate SupabaseClient
+  SupabaseClient --> BankingService : balance updated
+  BankingService -> SupabaseClient : insert transaction record
+  SupabaseClient --> BankingService : transaction logged
+  deactivate SupabaseClient
+  BankingService --> Customer : withdrawal success
+else insufficient balance
+  BankingService --> Customer : error - insufficient funds
+end
+deactivate BankingService
+
+@enduml

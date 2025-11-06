@@ -1,0 +1,24 @@
+@startuml
+title Admin View All Users Sequence Diagram
+
+actor Admin
+
+Admin -> AuthService : login(email, password)
+activate AuthService
+AuthService -> SupabaseClient : verify admin credentials
+activate SupabaseClient
+SupabaseClient --> AuthService : credentials valid
+deactivate SupabaseClient
+AuthService --> Admin : authentication success
+deactivate AuthService
+
+Admin -> BankingService : get_all_users()
+activate BankingService
+BankingService -> SupabaseClient : select * from users
+activate SupabaseClient
+SupabaseClient --> BankingService : list of users
+deactivate SupabaseClient
+BankingService --> Admin : display all user data
+deactivate BankingService
+
+@enduml

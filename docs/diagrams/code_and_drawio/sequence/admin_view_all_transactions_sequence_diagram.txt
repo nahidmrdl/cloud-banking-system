@@ -1,0 +1,15 @@
+@startuml
+title Admin View All Transactions Sequence Diagram
+
+actor Admin
+
+Admin -> BankingService : get_all_transactions()
+activate BankingService
+BankingService -> SupabaseClient : select * from transactions
+activate SupabaseClient
+SupabaseClient --> BankingService : list of all transactions
+deactivate SupabaseClient
+BankingService --> Admin : display transaction logs
+deactivate BankingService
+
+@enduml

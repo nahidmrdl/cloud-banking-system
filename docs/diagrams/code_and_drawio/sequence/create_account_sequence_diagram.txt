@@ -1,0 +1,15 @@
+@startuml
+title Create Account Sequence Diagram
+
+actor Customer
+
+Customer -> BankingService : create_account(account_type)
+activate BankingService
+BankingService -> SupabaseClient : insert new account record (user_id, type, balance=0)
+activate SupabaseClient
+SupabaseClient --> BankingService : account created
+deactivate SupabaseClient
+BankingService --> Customer : account creation success message
+deactivate BankingService
+
+@enduml

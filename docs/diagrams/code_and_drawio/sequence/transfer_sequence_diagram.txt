@@ -1,0 +1,29 @@
+@startuml
+title Transfer Transaction Sequence Diagram
+
+actor Customer
+
+Customer -> BankingService : transfer(source_account, target_account, amount)
+activate BankingService
+
+BankingService -> SupabaseClient : fetch balances for both accounts
+activate SupabaseClient
+SupabaseClient --> BankingService : account balances
+deactivate SupabaseClient
+
+alt sufficient funds
+  BankingService -> SupabaseClient : deduct amount from source
+  activate SupabaseClient
+  SupabaseClient --> BankingService : source updated
+  BankingService -> SupabaseClient : add amount to target
+  SupabaseClient --> BankingService : target updated
+  BankingService -> SupabaseClient : insert transaction record for both
+  SupabaseClient --> BankingService : transactions logged
+  deactivate SupabaseClient
+  BankingService --> Customer : transfer successful
+else insufficient funds
+  BankingService --> Customer : error - insufficient funds
+end
+deactivate BankingService
+
+@enduml
