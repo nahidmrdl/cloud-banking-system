@@ -1,0 +1,26 @@
+@startuml
+title Deposit Transaction Sequence Diagram
+
+actor Customer
+
+Customer -> AuthService : login(email, password)
+activate AuthService
+AuthService -> SupabaseClient : verify credentials
+activate SupabaseClient
+SupabaseClient --> AuthService : credentials valid
+deactivate SupabaseClient
+AuthService --> Customer : success token
+deactivate AuthService
+
+Customer -> BankingService : deposit(account_id, amount)
+activate BankingService
+BankingService -> SupabaseClient : update balance
+activate SupabaseClient
+SupabaseClient --> BankingService : balance updated
+BankingService -> SupabaseClient : insert transaction record
+SupabaseClient --> BankingService : transaction logged
+deactivate SupabaseClient
+BankingService --> Customer : transaction success message
+deactivate BankingService
+
+@enduml

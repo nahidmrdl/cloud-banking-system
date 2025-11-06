@@ -1,0 +1,71 @@
+@startuml
+skinparam rankdir LR
+
+class User {
+  + id : str
+  + name : str
+  + email : str
+  + role : str ("customer" or "admin")
+  + authenticate()
+  + get_accounts() : List<Account>
+}
+
+abstract class Account {
+  # id : str
+  # user_id : str
+  # balance : float
+  # transactions : List<Transaction>
+  + deposit(amount)
+  + withdraw(amount)
+  + transfer(target_account, amount)
+}
+
+class SavingsAccount {
+  + interest_rate : float
+  + apply_interest()
+}
+
+class CheckingAccount {
+  + overdraft_limit : float
+  + check_overdraft(amount)
+}
+
+class Transaction {
+  + id : str
+  + account_id : str
+  + type : str ("deposit", "withdrawal", "transfer")
+  + amount : float
+  + timestamp : datetime
+  + description : str
+}
+
+class AuthService {
+  + register(email, password)
+  + login(email, password)
+  + logout()
+}
+
+class BankingService {
+  + create_account(user, account_type)
+  + perform_transaction(account, type, amount)
+  + transfer(source_account, target_account, amount)
+  + get_transaction_history(account)
+}
+
+class SupabaseClient {
+  + insert(table, data)
+  + select(table, filters)
+  + update(table, data)
+  + delete(table, filters)
+}
+
+' %% Inheritance
+SavingsAccount --|> Account
+CheckingAccount --|> Account
+
+' %% Relationships
+User "1" *-- "1..*" Account : owns
+Account "1" *-- "1..*" Transaction : logs
+BankingService ..> SupabaseClient : uses
+AuthService ..> SupabaseClient : uses
+@enduml
